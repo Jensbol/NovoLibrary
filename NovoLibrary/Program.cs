@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using NovoLibrary.Core;
 using NovoLibrary.Data;
 using NovoLibrary.Services.BookService;
+using NovoLibrary.Services.MemberService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IMemberService, MemberService>();
 
 builder.Services.AddDbContext<LibraryContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
