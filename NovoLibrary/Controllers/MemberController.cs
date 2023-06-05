@@ -11,8 +11,6 @@ namespace NovoLibrary.Controllers
     [ApiController]
     public class MemberController : ControllerBase
     {
-        
-
         [HttpGet]
         public async Task<ActionResult<List<Member>>> GetAllMembers()
         {
@@ -41,6 +39,5 @@ namespace NovoLibrary.Controllers
         public async Task<ActionResult<List<Member>>> DeleteBook(int id)
         {
             throw new NotImplementedException();
-
         }
 }

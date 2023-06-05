@@ -28,7 +28,5 @@ namespace NovoLibrary.Controllers
         {
             throw new NotImplementedException();
         }
-       
-
     }
 }
