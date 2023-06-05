@@ -12,12 +12,15 @@ namespace NovoLibrary.Core
 
         public IGenericRepository<Member> MemberRepository { get; }
 
+        public IBorrowRepository BorrowTransactionRepository { get; private set; }
+
 
         public UnitOfWork(LibraryContext libraryContext)
         {
             _libraryContext = libraryContext;
             BookRepository = new GenericRepository<Book>(_libraryContext);
             MemberRepository = new GenericRepository<Member>(_libraryContext);
+            BorrowTransactionRepository = new BorrowRepository(_libraryContext);
 
         }
 

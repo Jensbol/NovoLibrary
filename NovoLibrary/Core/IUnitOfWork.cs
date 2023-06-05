@@ -7,6 +7,7 @@ namespace NovoLibrary.Core
     {
         IGenericRepository<Book> BookRepository { get; }
         IGenericRepository<Member> MemberRepository { get; }
+        IBorrowRepository BorrowTransactionRepository { get; }
         Task CompleteAsync();
     }
 }
