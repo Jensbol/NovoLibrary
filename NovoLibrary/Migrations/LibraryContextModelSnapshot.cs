@@ -46,7 +46,7 @@ namespace NovoLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Books");
+                    b.ToTable("Books", (string)null);
                 });
 
             modelBuilder.Entity("NovoLibrary.Models.BorrowTransaction", b =>
@@ -71,7 +71,7 @@ namespace NovoLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BorrowTransactions");
+                    b.ToTable("BorrowTransactions", (string)null);
                 });
 
             modelBuilder.Entity("NovoLibrary.Models.Member", b =>
@@ -91,7 +91,7 @@ namespace NovoLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Members");
+                    b.ToTable("Members", (string)null);
                 });
 #pragma warning restore 612, 618
         }

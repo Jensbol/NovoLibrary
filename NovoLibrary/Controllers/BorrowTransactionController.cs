@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NovoLibrary.Models;
+using NovoLibrary.Models.DTOs;
 using NovoLibrary.Services.BookService;
 using NovoLibrary.Services.BorrowService;
 
@@ -25,22 +26,31 @@ namespace NovoLibrary.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<BorrowTransaction>>> BorrowBook(BorrowTransaction borrowTransaction)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<ActionResult<BorrowTransactionDto>> BorrowBook(BorrowTransactionDto borrowTransactionDto)
         {
             try
             {
-                var borrow = await _borrowService.BorrowBook(borrowTransaction);
-                return Ok(borrow);
-            } catch (Exception e)
+                var borrow = await _borrowService.BorrowBook(new BorrowTransaction
+                {
+                    BookId = borrowTransactionDto.BookId,
+                    MemberId = borrowTransactionDto.MemberId,
+                    BorrowDate = borrowTransactionDto.BorrowDate,
+                    ReturnDate = borrowTransactionDto.ReturnDate
+                });
+
+                return StatusCode(201, borrowTransactionDto);
+            }
+            catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
-            
-            
+
+
         }
 
         [HttpPut("{bookId}")]
-        public async Task<ActionResult<List<BorrowTransaction>>> ReturnBook(int bookId)
+        public async Task<ActionResult<List<BorrowTransactionDto>>> ReturnBook(int bookId)
         {
             var borrow = await _borrowService.ReturnBook(bookId);
             return Ok(borrow);

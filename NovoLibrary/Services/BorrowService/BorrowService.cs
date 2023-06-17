@@ -11,15 +11,15 @@ namespace NovoLibrary.Services.BorrowService
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<BorrowTransaction>> BorrowBook(BorrowTransaction borrowTransaction)
+        public async Task<BorrowTransaction> BorrowBook(BorrowTransaction borrowTransaction)
         {
             var book = await _unitOfWork.BookRepository.GetById(borrowTransaction.BookId);
             
             if (book is null)
-                return null;
+                throw new KeyNotFoundException($"No book found with ID {borrowTransaction.BookId}");
 
             if (!book.IsAvailable)
-                throw new System.InvalidOperationException("Book is not available");
+                throw new InvalidOperationException("Book is not available");
 
             book.IsAvailable = false;
 
@@ -27,7 +27,7 @@ namespace NovoLibrary.Services.BorrowService
             await _unitOfWork.BorrowTransactionRepository.Add(borrowTransaction);
             await _unitOfWork.CompleteAsync();
 
-            return await _unitOfWork.BorrowTransactionRepository.GetAll();
+            return borrowTransaction;
         }
 
         public async Task<List<Book>> GetBooksByMember(int memberId)

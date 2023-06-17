@@ -6,7 +6,7 @@ namespace NovoLibrary.Services.BorrowService
     {
         Task<List<Book>> GetBooksByMember(int memberId);
 
-        Task<List<BorrowTransaction>> BorrowBook(BorrowTransaction borrowTransaction);
+        Task<BorrowTransaction> BorrowBook(BorrowTransaction borrowTransaction);
 
         Task<List<BorrowTransaction>> ReturnBook(int bookId);
 
