@@ -13,13 +13,9 @@ namespace NovoLibrary.Core.Repositories
         public async Task<List<Book>> getBooksByMember(int memberID)
         {
             return await _context.BorrowTransactions
-                .Where(bt => bt.MemberId == memberID)
-                .Select(bt => bt.BookId)
-                .Join(_context.Books,
-                    btId => btId,
-                    book => book.Id,
-                    (btId, book) => book)
-                .ToListAsync();
+            .Where(bt => bt.MemberId == memberID)
+            .Select(bt => bt.Book)
+            .ToListAsync();
         }
     }
 }

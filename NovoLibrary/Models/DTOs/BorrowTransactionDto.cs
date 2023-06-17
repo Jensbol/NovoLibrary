@@ -1,10 +1,9 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace NovoLibrary.Models
+namespace NovoLibrary.Models.DTOs
 {
-    public class BorrowTransaction
+    public class BorrowTransactionDto
     {
-        public int Id { get; set; }
 
         public int BookId { get; set; }
         public int MemberId { get; set; }
@@ -13,6 +12,5 @@ namespace NovoLibrary.Models
 
         public DateTime? ReturnDate { get; set; }
 
-        public virtual Book? Book { get; set; }
     }
 }
