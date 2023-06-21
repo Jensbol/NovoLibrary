@@ -68,9 +68,7 @@ dotnet test
 
 While working on this project, several assumptions and decisions were made:
 
-<<<<<<< HEAD
-
-1. ReturnDate Interpretation: The attribute 'ReturnDate' can have two possible interpretations. It could represent the date by which a borrowed book is expected to be returned, or it could be the date to be filled when the book is actually returned. I opted for the latter interpretation for the purpose of this project.
+1. ReturnDate Interpretation: The attribute 'ReturnDate' can have two possible interpretations. It could represent the date by which a borrowed book is expected to be returned, or it could be the date to be filled when the book is actually returned. I opted for the first interpretation for the purpose of this project.
 2. Hosting and Database: Azure is used as the hosting platform for this application, therefore it also made sense to use the Azure SQL server to host the database. The database used is a MSSQL database.
 3. Test Coverage: I prioritized writing unit tests for the core business logic due to time constraints. However, a more comprehensive test coverage would involve writing more test scenarios and corresponding unit tests for every method in the service layers.
 4. Swagger Documentation: The application link directly opens the Swagger documentation. This decision was made to facilitate quick API overview and provide immediate access to the API documentation.

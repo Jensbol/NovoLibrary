@@ -12,8 +12,8 @@ using NovoLibrary.Data;
 namespace NovoLibrary.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    [Migration("20230605190016_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230621075502_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,10 +69,12 @@ namespace NovoLibrary.Migrations
                     b.Property<int>("MemberId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("ReturnDate")
+                    b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookId");
 
                     b.ToTable("BorrowTransactions");
                 });
@@ -95,6 +97,17 @@ namespace NovoLibrary.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Members");
+                });
+
+            modelBuilder.Entity("NovoLibrary.Models.BorrowTransaction", b =>
+                {
+                    b.HasOne("NovoLibrary.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
                 });
 #pragma warning restore 612, 618
         }

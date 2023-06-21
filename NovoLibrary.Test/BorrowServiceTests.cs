@@ -23,7 +23,7 @@ namespace NoveLibrary.Test
             // Arrange
             var book = new Book { Id = 1, IsAvailable = false };
             _unitOfWorkMock.Setup(u => u.BookRepository.GetById(It.IsAny<int>())).ReturnsAsync(book);
-            
+
 
             var borrowTransaction = new BorrowTransaction
             {
@@ -53,7 +53,7 @@ namespace NoveLibrary.Test
 
             //Assert
             var excception = await Assert.ThrowsAsync<InvalidOperationException>(() => _borrowService.BorrowBook(transaction));
-            Assert.Equal("You need to borrow date for this transaction", excception.Message);
+            Assert.Equal("You need to set the borrow date for this transaction", excception.Message);
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace NoveLibrary.Test
 
             //Assert
             Assert.NotNull(borrowTransaction.ReturnDate);
-            Assert.Equal(DateTime.UtcNow.Date, borrowTransaction.ReturnDate.Value.Date);
+            Assert.Equal(DateTime.UtcNow.Date, borrowTransaction.ReturnDate.Date);
         }
 
         [Fact]
@@ -113,7 +113,7 @@ namespace NoveLibrary.Test
         {
             // Arrange
             var book = new Book { Id = 1, IsAvailable = false }; // a borrowed book
-            var borrowTransaction = new BorrowTransaction { Id = 1, BookId = book.Id, MemberId = 1, BorrowDate = DateTime.Now, ReturnDate = null };
+            var borrowTransaction = new BorrowTransaction { Id = 1, BookId = book.Id, MemberId = 1, BorrowDate = DateTime.Now, ReturnDate = DateTime.Now };
 
             _unitOfWorkMock.Setup(u => u.BorrowTransactionRepository.GetById(borrowTransaction.Id)).ReturnsAsync(borrowTransaction);
             _unitOfWorkMock.Setup(u => u.BookRepository.GetById(book.Id)).ReturnsAsync(book);
@@ -131,25 +131,17 @@ namespace NoveLibrary.Test
         }
 
         [Fact]
-        public async Task ReturnBook_ShouldUpdateBorrowTransaction_WhenCalled()
+        public async Task ReturnBook_ShouldThrowException_WhenBookIsAlreadyAvailable()
         {
             // Arrange
-            var book = new Book { Id = 1, IsAvailable = false };
-            var borrowTransaction = new BorrowTransaction { Id = 1, BookId = book.Id, MemberId = 1, BorrowDate = DateTime.Now, ReturnDate = null };
+            var book = new Book { Id = 1, IsAvailable = true }; // Book is already marked as available
+            var borrowTransaction = new BorrowTransaction { Id = 1, BookId = book.Id, MemberId = 1, BorrowDate = DateTime.Now };
 
             _unitOfWorkMock.Setup(u => u.BorrowTransactionRepository.GetById(borrowTransaction.Id)).ReturnsAsync(borrowTransaction);
             _unitOfWorkMock.Setup(u => u.BookRepository.GetById(book.Id)).ReturnsAsync(book);
-            _unitOfWorkMock.Setup(u => u.BorrowTransactionRepository.Update(It.IsAny<BorrowTransaction>())).Returns(Task.FromResult(true));
-            _unitOfWorkMock.Setup(u => u.BookRepository.Update(It.IsAny<Book>())).Returns(Task.FromResult(true));
-            _unitOfWorkMock.Setup(u => u.CompleteAsync()).Returns(Task.CompletedTask);
 
-            // Act
-            await _borrowService.ReturnBook(borrowTransaction.Id);
-
-            // Assert
-            Assert.NotNull(borrowTransaction.ReturnDate);
-            _unitOfWorkMock.Verify(u => u.BorrowTransactionRepository.Update(It.IsAny<BorrowTransaction>()), Times.Once());
-            _unitOfWorkMock.Verify(u => u.CompleteAsync(), Times.Once());
+            // Act & Assert
+            await Assert.ThrowsAsync<InvalidOperationException>(async () => await _borrowService.ReturnBook(borrowTransaction.Id));
         }
     }
 }

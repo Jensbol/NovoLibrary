@@ -11,7 +11,7 @@ namespace NovoLibrary.Models
         
         public DateTime BorrowDate { get; set; }
 
-        public DateTime? ReturnDate { get; set; }
+        public DateTime ReturnDate { get; set; }
 
         public virtual Book? Book { get; set; }
     }

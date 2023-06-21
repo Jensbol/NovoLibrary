@@ -40,14 +40,13 @@ namespace NovoLibrary.Services.BorrowService
         {
             var bookToReturn = await _unitOfWork.BorrowTransactionRepository.GetById(borrowId);
             if (bookToReturn is null)
-                return null;
+                throw new KeyNotFoundException($"No transaction found with ID {borrowId}");
 
             var book = await _unitOfWork.BookRepository.GetById(bookToReturn.BookId);
             if (book is null)
-                return null;
+                throw new KeyNotFoundException($"No book found with ID {bookToReturn.BookId}");
 
             book.IsAvailable = true;
-            bookToReturn.ReturnDate = DateTime.Now;
 
             await _unitOfWork.BookRepository.Update(book);
             await _unitOfWork.BorrowTransactionRepository.Update(bookToReturn);

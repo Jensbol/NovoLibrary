@@ -46,7 +46,7 @@ namespace NovoLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Books", (string)null);
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("NovoLibrary.Models.BorrowTransaction", b =>
@@ -66,12 +66,14 @@ namespace NovoLibrary.Migrations
                     b.Property<int>("MemberId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("ReturnDate")
+                    b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.ToTable("BorrowTransactions", (string)null);
+                    b.HasIndex("BookId");
+
+                    b.ToTable("BorrowTransactions");
                 });
 
             modelBuilder.Entity("NovoLibrary.Models.Member", b =>
@@ -91,7 +93,18 @@ namespace NovoLibrary.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Members", (string)null);
+                    b.ToTable("Members");
+                });
+
+            modelBuilder.Entity("NovoLibrary.Models.BorrowTransaction", b =>
+                {
+                    b.HasOne("NovoLibrary.Models.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
                 });
 #pragma warning restore 612, 618
         }

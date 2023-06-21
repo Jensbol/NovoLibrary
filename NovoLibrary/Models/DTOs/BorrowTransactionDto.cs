@@ -10,7 +10,7 @@ namespace NovoLibrary.Models.DTOs
         
         public DateTime BorrowDate { get; set; }
 
-        public DateTime? ReturnDate { get; set; }
+        public DateTime ReturnDate { get; set; }
 
     }
 }
