@@ -8,7 +8,7 @@ namespace NovoLibrary.Services.BorrowService
 
         Task<BorrowTransaction> BorrowBook(BorrowTransaction borrowTransaction);
 
-        Task<List<BorrowTransaction>> ReturnBook(int bookId);
+        Task<BorrowTransaction> ReturnBook(int bookId);
 
     }
 }

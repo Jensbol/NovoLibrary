@@ -33,10 +33,10 @@ namespace NovoLibrary.Services.BorrowService
         public async Task<List<Book>> GetBooksByMember(int memberId)
         {
             var booksByMember = await _unitOfWork.BorrowTransactionRepository.getBooksByMember(memberId);
-            return booksByMember.FindAll(b => b.IsAvailable == false);
+            return booksByMember.Where(b => b.IsAvailable == false).Distinct().ToList();
         }
 
-        public async Task<List<BorrowTransaction>> ReturnBook(int borrowId)
+        public async Task<BorrowTransaction> ReturnBook(int borrowId)
         {
             var bookToReturn = await _unitOfWork.BorrowTransactionRepository.GetById(borrowId);
             if (bookToReturn is null)
@@ -52,7 +52,7 @@ namespace NovoLibrary.Services.BorrowService
             await _unitOfWork.BorrowTransactionRepository.Update(bookToReturn);
             await _unitOfWork.CompleteAsync();
 
-            return await _unitOfWork.BorrowTransactionRepository.GetAll();
+            return bookToReturn;
         }
     }
 }

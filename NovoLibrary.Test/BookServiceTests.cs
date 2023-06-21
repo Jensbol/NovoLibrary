@@ -57,10 +57,10 @@ namespace NoveLibrary.Test
         public async Task GetBookById_ShouldThrowException_WhenBookDoesNotExist()
         {
             // Arrange
-            _unitOfWorkMock.Setup(u => u.BookRepository.GetById(It.IsAny<int>())).ReturnsAsync((Book)null);
+            _unitOfWorkMock.Setup(u => u.BookRepository.GetById(It.IsAny<int>())).ReturnsAsync((Book)null!);
 
-            // Act
-            await Assert.ThrowsAsync<Exception>(() => _bookService.GetBookById(1));
+            // Act && Assert
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => _bookService.GetBookById(1)!);
         }
     }
 }

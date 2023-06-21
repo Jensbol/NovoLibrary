@@ -80,7 +80,6 @@ namespace NoveLibrary.Test
 
 
             //Assert
-            Assert.NotNull(borrowTransaction.ReturnDate);
             Assert.Equal(DateTime.UtcNow.Date, borrowTransaction.ReturnDate.Date);
         }
 
