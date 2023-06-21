@@ -50,10 +50,17 @@ namespace NovoLibrary.Controllers
         }
 
         [HttpPut("{bookId}")]
-        public async Task<ActionResult<List<BorrowTransactionDto>>> ReturnBook(int bookId)
+        public async Task<ActionResult<BorrowTransactionDto>> ReturnBook(int bookId)
         {
             var borrow = await _borrowService.ReturnBook(bookId);
-            return Ok(borrow);
+            var borrowTransactionDto = new BorrowTransactionDto
+            {
+                BookId = borrow.BookId,
+                MemberId = borrow.MemberId,
+                BorrowDate = borrow.BorrowDate,
+                ReturnDate = borrow.ReturnDate
+            };
+            return Ok(borrowTransactionDto);
         }
        
 
