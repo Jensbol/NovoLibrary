@@ -18,8 +18,19 @@ builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IMemberService, MemberService>();
 builder.Services.AddScoped<IBorrowService, BorrowService>();
 
+
+string connectionString;
+if (builder.Environment.IsDevelopment())
+{
+    connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+}
+else // Assuming this as production
+{
+    connectionString = builder.Configuration.GetConnectionString("CONNECTION_STRING");
+}
+
 builder.Services.AddDbContext<LibraryContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 

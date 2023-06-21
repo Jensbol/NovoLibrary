@@ -1,6 +1,6 @@
 # NovoLibrary
 
-NovoLibrary is a library management system offering core features such as managing book inventory, handling member data, and processing book borrow and return transactions.
+NovoLibrary is a library management system offering core features such as managing book inventory, handling member data, and processing transaction of borrowing and returning them.
 
 ## Getting Started
 
@@ -21,7 +21,7 @@ Access the deployed application from [this link](https://novolibraryapi.azureweb
 - C#
 - .NET Core 7
 - Entity Framework Core
-- MSSQL database
+- AzureSQL/MSSQL database
 - XUnit and Moq for unit testing
 - GitHub for version control
 
@@ -56,6 +56,8 @@ dotnet run
 
 I'm using XUnit as the testing framework.
 
+To run the test:
+
 1. Clone this repository to your local machine.
 2. Navigate to the project directory in your terminal.
 3. Run the following command:
@@ -69,16 +71,18 @@ dotnet test
 While working on this project, several assumptions and decisions were made:
 
 1. ReturnDate Interpretation: The attribute 'ReturnDate' can have two possible interpretations. It could represent the date by which a borrowed book is expected to be returned, or it could be the date to be filled when the book is actually returned. I opted for the first interpretation for the purpose of this project.
-2. Hosting and Database: Azure is used as the hosting platform for this application, therefore it also made sense to use the Azure SQL server to host the database. The database used is a MSSQL database.
-3. Test Coverage: I prioritized writing unit tests for the core business logic due to time constraints. However, a more comprehensive test coverage would involve writing more test scenarios and corresponding unit tests for every method in the service layers.
-4. Swagger Documentation: The application link directly opens the Swagger documentation. This decision was made to facilitate quick API overview and provide immediate access to the API documentation.
+2. Controlled Access: I assume this system is used exclusively by librarians and not publicly available, as the requirement also mentions not being concerned with authentication.
+3. Hosting and Database: Azure is used as the hosting platform for this application, therefore it also made sense to use the Azure SQL server to host the database. The database used is a MSSQL database.
+4. Test Coverage: I prioritized writing unit tests for the core business logic due to time constraints. However, a more comprehensive test coverage would involve writing more test scenarios and corresponding unit tests for every method in the service layers.
+5. Swagger Documentation: The application link directly opens the Swagger documentation. This decision was made to facilitate quick API overview and provide immediate access to the API documentation.
 
 ## Trade-offs and Potential Improvements
 
 There were a few compromises made during the development of the project and several areas were identified for potential enhancements::
 
 1. Input Validation: Currently, there is a lack of input validation in the controllers. Implementing this can prevent erroneous data entries.
-2. Response Wrapping: The responses from the services are not wrapped in a standard format. Adopting a consistent format for service responses can improve readability and error tracking.
-3. Exception Handling: The current exception handling strategy is basic and lacks thoroughness. Implementing a comprehensive global exception handling strategy, including dealing with null references and meaningful custom exceptions, can improve the overall robustness of the application.
-4. HTTP Status Codes: The application can benefit from a more strategic use and handling of HTTP status codes. This will enhance the usability of the API and provide more accurate error codes.
-5. Testing: As mentioned earlier, the unit test coverage of the application could be significantly improved. The more the coverage, the more reliable the application would be.
+2. Use of DTOs: Currently, the application exposes the domain entities directly via the API. Using Data Transfer Objects (DTOs) to define what data is exposed via the API could increase security, reduce the risk of over-posting, and make it easier to change the underlying domain models without affecting the API contract
+3. Response Wrapping: The responses from the services are not wrapped in a standard format. Adopting a consistent format for service responses can improve readability and error tracking.
+4. Exception Handling: The current exception handling strategy is basic and lacks thoroughness. Implementing a comprehensive global exception handling strategy, including dealing with null references and meaningful custom exceptions, can improve the overall robustness of the application.
+5. HTTP Status Codes: The application can benefit from a more strategic use and handling of HTTP status codes. This will enhance the usability of the API and provide more accurate error codes.
+6. Testing: As mentioned earlier, the unit test coverage of the application could be significantly improved. The more the coverage, the more reliable the application would be.
